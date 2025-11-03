@@ -1,0 +1,81 @@
+// ==UserScript==
+// @name         Genius Rounded UI
+// @namespace    http://tampermonkey.net/
+// @version      3.0
+// @description  Round flat UI elements, tags, and YouTube embeds on Genius.com
+// @author       Kyeler
+// @match        https://genius.com/*
+// @grant        GM_addStyle
+// @run-at       document-end
+// ==/UserScript==
+
+(function () {
+  'use strict';
+
+  GM_addStyle(`
+    /* Restore scrolling */
+    html, body {
+      overflow: auto !important;
+    }
+
+    /* Keep headers, nav, top bars square */
+    header, nav, .HeaderWithCoverArt__Container-sc-1c0xh8v-0,
+    .Header__Container-sc-1c0xh8v-1, .StickyNavSentinel__Sentinel-sc-64ca98a7-0 {
+      border-radius: 0 !important;
+    }
+
+    /* Round generic divs, sections, articles, aside, buttons, images, inputs */
+    div, section, article, aside, button, img, input, textarea, select {
+      border-radius: 12px;
+      transition: border-radius 0.3s ease;
+    }
+
+    /* Don't modify inline text elements */
+    p, span, a, h1, h2, h3, h4, h5, h6, strong, em, i, b {
+      border-radius: 0 !important;
+    }
+
+    /* Cards, images, annotations, comments */
+    img, .SizedImage__Image-sc-3647916d-1, .VideoThumbnail, .Annotation, .Comment {
+      border-radius: 10px !important;
+    }
+
+    /* Buttons and form fields slightly smaller */
+    button, input, textarea, select {
+      border-radius: 8px !important;
+    }
+
+    /* Tags / badges rounding */
+    .Tag, .Tags__Container-sc-1f52f84-0, .TagButton__Button-sc-xyz, [class*="Badge"], [class*="tag"] {
+      border-radius: 16px !important;
+    }
+
+    /* YouTube embed container */
+    iframe[src*="youtube.com"], .Embed__Container-sc-xyz {
+      border-radius: 14px !important;
+      overflow: hidden !important;
+    }
+
+    /* Subtle shadow for depth */
+    div, button, img, iframe {
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Smooth transitions */
+    * {
+      transition: border-radius 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Ensure sticky bars and nav remain square */
+    .HeaderWithCoverArt__Container-sc-1c0xh8v-0,
+    .Header__Container-sc-1c0xh8v-1,
+    [class*="NavBar"], [class*="Navigation"],
+    .LyricsHeader__Container, .Lyrics__Header {
+      border-radius: 0 !important;
+      overflow: visible !important;
+      box-shadow: none !important;
+    }
+  `);
+
+  console.log('hopefully everything worked, because i got to the end of the script!');
+})();
