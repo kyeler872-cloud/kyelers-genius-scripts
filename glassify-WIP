@@ -1,0 +1,168 @@
+// ==UserScript==
+// @name         Genius Glassify —  v7.8
+// @namespace    https://genius.com/
+// @version      7.8
+// @description  Frosted glass theme with aurora, unified Q&A, Pyongs, Comments, Transcribes, all text white, hover/glow effects locked in.
+// @author       Kyeler
+// @match        https://genius.com/*
+// @grant        none
+// ==/UserScript==
+
+(function() {
+  'use strict';
+
+  const style = document.createElement('style');
+  style.id = 'genius-glassify-v7-8';
+  style.innerHTML = `
+    /* 🌈 Aurora Background */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(at 30% 30%, #6c7aff66 0%, transparent 60%),
+        radial-gradient(at 70% 70%, #ff4faa44 0%, transparent 60%),
+        radial-gradient(at 80% 20%, #44ffee55 0%, transparent 60%);
+      background-blend-mode: screen;
+      animation: auroraShift 18s ease-in-out infinite alternate;
+      z-index: -1;
+      pointer-events: none;
+    }
+    @keyframes auroraShift {
+      0% { filter: hue-rotate(0deg) blur(1px); opacity: 0.7; }
+      50% { filter: hue-rotate(60deg) blur(3px); opacity: 0.9; }
+      100% { filter: hue-rotate(120deg) blur(1px); opacity: 0.7; }
+    }
+
+    html, body {
+      background: linear-gradient(145deg, #060611, #0c0c19, #0a0a12) fixed !important;
+      color: #e6e8ee !important;
+      font-family: "Inter", "Segoe UI", sans-serif !important;
+      transition: background 0.8s ease;
+    }
+
+    /* 🪩 Frosted Containers (lyrics, annotations, etc) */
+    .Lyrics__Container, .lyrics, .song_body, .RichText__Container,
+    .annotation, .Annotation, .SongInfo, .SongBody, .SongPage__Section,
+    [class*="Lyrics__Container"], [class*="annotation_container"],
+    [class*="annotation"], [class*="SongPage__Section"] {
+      background: rgba(255, 255, 255, 0.07) !important;
+      backdrop-filter: blur(14px) saturate(160%) !important;
+      -webkit-backdrop-filter: blur(14px) saturate(160%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      border-radius: 18px !important;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3) !important;
+      padding: 1rem !important;
+      color: #e8eaf2 !important;
+      transition: background 0.4s ease, box-shadow 0.4s ease;
+    }
+    .Lyrics__Container:hover, .annotation:hover, .RichText__Container:hover,
+    .SongBody:hover {
+      background: rgba(255, 255, 255, 0.12) !important;
+      box-shadow: 0 0 40px rgba(129, 170, 255, 0.25);
+    }
+
+    /* ❓ Unified Q&A, Pyongs, Comments, Transcribes */
+    profile-contributions-pyongs,
+    profile-contributions-comments,
+    profile-contributions-answers,
+    profile-contributions-transcribes,
+    .QAPage__Container, .QAPage__Section,
+    [class*="Question"], [class*="Answer"] {
+      display: block !important;
+      background: rgba(255,255,255,0.07) !important;
+      backdrop-filter: blur(14px) saturate(160%) !important;
+      -webkit-backdrop-filter: blur(14px) saturate(160%) !important;
+      border: 1px solid rgba(255,255,255,0.08) !important;
+      border-radius: 18px !important;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3) !important;
+      margin: 0.5rem 0 !important;
+      padding: 1rem !important;
+      color: #fff !important;
+      transition: all 0.4s ease;
+    }
+
+    /* Force all text inside nested Q&A and rich content white */
+    profile-contributions-answers *,
+    profile-contributions-pyongs *,
+    profile-contributions-comments *,
+    profile-contributions-transcribes *,
+    [class*="Question"] *,
+    [class*="Answer"] *,
+    .rich_text_formatting {
+      color: #fff !important;
+      background: transparent !important;
+    }
+
+    /* Hover effects for all links/buttons inside contributions */
+    profile-contributions-pyongs a,
+    profile-contributions-comments a,
+    profile-contributions-answers a,
+    profile-contributions-transcribes a,
+    profile-contributions-pyongs button,
+    profile-contributions-comments button,
+    profile-contributions-answers button,
+    profile-contributions-transcribes button {
+      display: block;
+      background: rgba(255,255,255,0.05) !important;
+      border-radius: 12px;
+      padding: 0.5rem 0.8rem;
+      margin-top: 0.5rem;
+      transition: all 0.25s ease;
+      color: #fff !important;
+    }
+    profile-contributions-pyongs a:hover,
+    profile-contributions-comments a:hover,
+    profile-contributions-answers a:hover,
+    profile-contributions-transcribes a:hover,
+    profile-contributions-pyongs button:hover,
+    profile-contributions-comments button:hover,
+    profile-contributions-answers button:hover,
+    profile-contributions-transcribes button:hover {
+      background: rgba(120,180,255,0.2) !important;
+      box-shadow: 0 0 25px rgba(120,180,255,0.4);
+      transform: translateY(-1px) scale(1.02);
+    }
+
+    /* Voting buttons */
+    [class*="Upvote"], [class*="Downvote"], .AnnotationVoteButton {
+      background: rgba(255,255,255,0.05) !important;
+      border-radius: 50% !important;
+      border: 1px solid rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      transition: all 0.25s ease;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    [class*="Upvote"]:hover {
+      box-shadow: 0 0 20px rgba(120,180,255,0.5);
+      transform: translateY(-1px) scale(1.1);
+    }
+    [class*="Downvote"]:hover {
+      box-shadow: 0 0 20px rgba(255,120,180,0.5);
+      transform: translateY(-1px) scale(1.1);
+    }
+    [class*="Upvote"].active {
+      background: rgba(120,180,255,0.3) !important;
+      box-shadow: 0 0 35px rgba(120,180,255,0.6);
+    }
+    [class*="Downvote"].active {
+      background: rgba(255,120,180,0.3) !important;
+      box-shadow: 0 0 35px rgba(255,120,180,0.6);
+    }
+
+    /* Smooth Fade-in */
+    body {
+      opacity: 0;
+      animation: fadeInGlassify 1s ease forwards;
+    }
+    @keyframes fadeInGlassify {
+      from { opacity: 0; transform: scale(1.01); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  `;
+  document.head.appendChild(style);
+  console.log('💎 Genius Glassify v7.8 — Q&A, Pyongs, Comments locked in.');
+})();
